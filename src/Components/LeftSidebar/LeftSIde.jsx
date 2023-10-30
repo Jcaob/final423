@@ -3,6 +3,9 @@ import nature from "../../assets/images/nature.jpg";
 import { Avatar, Tooltip } from "@material-tailwind/react";
 import avatar from "../../assets/images/avatar.jpg";
 import job from "../../assets/images/job.png";
+import location from "../../assets/images/location.png";
+import facebook from "../../assets/images/facebook.png";
+import twitter from "../../assets/images/twitter.png";
 
 const LeftSIde = () => {
   return (
@@ -26,9 +29,56 @@ const LeftSIde = () => {
           Try Premium for free
         </p>
       </div>
-      <div className="flex flex-col items-center pl-2">
-        <div className="flex items-center pb-4"></div>
-        <img className="h-10" src={job} alt="job" />
+      <div className="flex flex-col pl-2">
+        <div className="flex items-center pb-4">
+          <img className="h-10" src={job} alt="job" />
+          <p className=" font-serif font-bold text-lg no-underline tracking-normal leading-none">
+            React Developer
+          </p>
+        </div>
+        <div className="flex items-center">
+          <img className="h-10" src={location} alt="location" />
+          <p className=" font-serif font-bold text-lg no-underline tracking-normal leading-none">
+            Indiana
+          </p>
+        </div>
+        <div className="flex justify-center items-center pt-4">
+          <p className=" font-serif font-bold text-md text-[#0177b7] no-underline tracking-normal leading-none">
+            Events
+          </p>
+          <p className=" font-serif font-bold text-md text-[#0177b7] no-underline tracking-normal leading-none mx-2">
+            Groups
+          </p>
+          <p className=" font-serif font-bold text-md text-[#0177b7] no-underline tracking-normal leading-none">
+            Follow
+          </p>
+          <p className=" font-serif font-bold text-md text-[#0177b7] no-underline tracking-normal leading-none mx-2">
+            More
+          </p>
+        </div>
+        <div className=" ml-2">
+          <p className=" font-serif font-bold text-lg no-underline tracking-normal leading-none py-2">
+            Social Profiles
+          </p>
+          <div className="flex items-center">
+            <img className=" h-10 mb-3 mr-2" src={facebook} alt="Facebook" />
+            <p className=" font-serif font-bold text-lg text-transparent bg-clip-text bg-gradient-to-r to-red-700 from-blue-500 no-underline tracking-normal leading-normal py-2">
+              Social Network
+            </p>
+          </div>
+          <div className="flex items-center">
+            <img className=" h-10 mb-3 mr-2" src={twitter} alt="Twitter" />
+            <p className=" font-serif font-bold text-lg text-transparent bg-clip-text bg-gradient-to-r to-red-700 from-blue-500 no-underline tracking-normal leading-normal py-2">
+              Social Network
+            </p>
+          </div>
+        </div>
+      </div>
+      <div className="flex flex-col justify-center items-center pt-4">
+        <p className=" font-serif font-bold text-lg no-underline tracking-normal leading-none py-2">
+          Random Ads
+        </p>
+        <div className=" bg-blue-600 rounded-xl h-1 mb-4"></div>
       </div>
     </div>
   );
