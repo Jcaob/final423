@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useState, useEffect } from "react";
 import nature from "../../assets/images/nature.jpg";
 import { Avatar, Tooltip } from "@material-tailwind/react";
 import avatar from "../../assets/images/avatar.jpg";
@@ -6,8 +6,72 @@ import job from "../../assets/images/job.png";
 import location from "../../assets/images/location.png";
 import facebook from "../../assets/images/facebook.png";
 import twitter from "../../assets/images/twitter.png";
+import laptop from "../../assets/images/laptop.jpg";
+import media from "../../assets/images/media.jpg";
+import apps from "../../assets/images/apps.jpg";
+import tik from "../../assets/images/tik.jpg";
 
 const LeftSIde = () => {
+  const [data, setData] = useState([]);
+  const count = useRef(0);
+
+  const handleRandom = (arr) => {
+    setData(arr[Math.floor(Math.random() * arr?.length)]);
+  };
+
+  useEffect(() => {
+    const imageList = [
+      {
+        id: "1",
+        image: laptop,
+      },
+      {
+        id: "2",
+        image: media,
+      },
+      {
+        id: "3",
+        image: apps,
+      },
+      {
+        id: "4",
+        image: tik,
+      },
+    ];
+
+    handleRandom(imageList);
+    let countAds = 0;
+    let startAds = setInterval(() => {
+      countAds++;
+      handleRandom(imageList);
+      count.current = countAds;
+      if (countAds === 5) {
+        clearInterval(startAds);
+      }
+    }, 2000);
+
+    return () => {
+      clearInterval(startAds);
+    };
+  }, []);
+
+  const progressBar = () => {
+    switch (count.current) {
+      case 1:
+        return 15;
+      case 2:
+        return 30;
+      case 3:
+        return 45;
+      case 4:
+        return 60;
+      case 5:
+        return 75;
+      default:
+        return 0;
+    }
+  };
+
   return (
     <div className="flex flex-col h-screen bg-white pb-4 border-2 rounded-r-xl shadow-lg">
       <div className="flex flex-col items-center relative">
@@ -78,7 +142,11 @@ const LeftSIde = () => {
         <p className=" font-serif font-bold text-lg no-underline tracking-normal leading-none py-2">
           Random Ads
         </p>
-        <div className=" bg-blue-600 rounded-xl h-1 mb-4"></div>
+        <div
+          style={{ width: `${progressBar()}%` }}
+          className=" bg-blue-600 rounded-xl h-1 mb-4"
+        ></div>
+        <img className="h-36 rounded-lg" src={data.image} alt="ads" />
       </div>
     </div>
   );

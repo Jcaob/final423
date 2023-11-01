@@ -1,6 +1,9 @@
 import React from "react";
 import Navbar from "../Navbar/NavBar";
 import LeftSIde from "../LeftSidebar/LeftSIde";
+import RightSide from "../RightSiderbar/RightSide";
+import CardSection from "../Main/CardSection";
+import Main from "../Main/Main";
 
 const Home = () => {
   return (
@@ -11,6 +14,13 @@ const Home = () => {
       <div className="flex bg-gray-100 ">
         <div className="flex-auto w-[20%] fixed top-12">
           <LeftSIde></LeftSIde>
+        </div>
+        <div className="flex-auto w-[60%] absolute left-[20%] top-14 bg-gray-100 rounded-xl">
+          <CardSection></CardSection>
+          <Main></Main>
+        </div>
+        <div className="flex-auto w-[20%] fixed right-0 top-12">
+          <RightSide></RightSide>
         </div>
       </div>
     </div>
