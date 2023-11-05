@@ -13,15 +13,20 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import ClipLoader from "react-spinners/ClipLoader";
 
-const Login = () => {
+const Register = () => {
   const [loading, setLoading] = useState(false);
 
   let initialValues = {
+    name: "",
     email: "",
     password: "",
   };
 
   const validationSchema = Yup.object({
+    name: Yup.string()
+      .required("Required")
+      .min("4", "Must be 4 Characters long")
+      .matches(/^[a-zA-Z]+$/, "Name can only contain Letters"),
     email: Yup.string().email("Invalid Email Address").required("Required"),
     password: Yup.string()
       .required("Required")
@@ -29,28 +34,28 @@ const Login = () => {
       .matches(/^[a-zA-Z]+$/, "Password can only contain Letters"),
   });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const { email, password } = formik.values;
+  const handleRegister = (e) => {
+    const { name, emal, password } = formik.values;
     if (formik.isValid === true) {
       alert("good");
+      setLoading(true);
     } else {
-      alert("Check Your Input Fields");
+      alert("Check Input");
     }
-    console.log("Formik", formik);
+    e.preventDefault();
   };
 
-  const formik = useFormik({ initialValues, validationSchema, handleSubmit });
+  const formik = useFormik({ initialValues, validationSchema, handleRegister });
 
   return (
     <>
-      {" "}
       {loading ? (
         <div className="grid grid-cols-1 justify-items-center items-center h-screen">
           <ClipLoader color="#367fdd" size={150} speedMultiplier={0.5} />
         </div>
       ) : (
-        <div className=" grid grid-cols-1 h-screen justify-center items-center justify-items-center">
+        <div className="grid grid-cols-1 justify-items-center items-center h-screen">
+          {" "}
           <Card className="w-96">
             <CardHeader
               variant="gradient"
@@ -58,12 +63,28 @@ const Login = () => {
               className="mb-4 grid h-28 place-items-center"
             >
               <Typography variant="h3" color="white">
-                LOGIN
+                REGISTER
               </Typography>
             </CardHeader>
             <CardBody className="flex flex-col gap-4">
-              <form onSubmit={handleSubmit}>
-                <div className=" mb-2">
+              <form onSubmit={handleRegister}>
+                <div className="mb-2 ">
+                  <Input
+                    name="name"
+                    type="text"
+                    label="Name"
+                    size="lg"
+                    {...formik.getFieldProps("name")}
+                  />
+                </div>
+                <div>
+                  {formik.touched.name && formik.errors.name && (
+                    <Typography variant="small" color="red">
+                      {formik.errors.name}
+                    </Typography>
+                  )}
+                </div>
+                <div className="mt-4 mb-2">
                   <Input
                     name="email"
                     type="email"
@@ -79,7 +100,7 @@ const Login = () => {
                     </Typography>
                   )}
                 </div>
-                <div className=" mt-4 mb-2">
+                <div className="mt-4 mb-2">
                   <Input
                     name="password"
                     type="password"
@@ -98,27 +119,19 @@ const Login = () => {
                 <Button
                   variant="gradient"
                   fullWidth
-                  className="mb-4 "
                   type="submit"
+                  className=" mb-4"
                 >
-                  Login
+                  Sign In
                 </Button>
               </form>
             </CardBody>
             <CardFooter className="pt-0">
-              <Button variant="gradient" fullWidth className="mb-4">
-                Sign In with Google
-              </Button>
-              <Link to="/reset">
-                <p className="ml-1 font-bold font-serif text-sm flex justify-center text-blue-500 text-center">
-                  Reset Your Password
-                </p>
-              </Link>
-              <div className=" mt-6 flex font-serif text-base justify-center items-center">
-                Don't Have An Account?
-                <Link to="/register">
-                  <p className="ml-1 font-bold font-serif text-sm flex justify-center text-blue-500 text-center">
-                    Register
+              <div className="mt-6 flex font-serif text-base justify-center">
+                Already have an account?
+                <Link to="/login">
+                  <p className="ml-1 font-bold font-serif text-base text-blue-500 text-center">
+                    Login
                   </p>
                 </Link>
               </div>
@@ -130,4 +143,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
