@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Card,
   CardHeader,
@@ -12,8 +12,10 @@ import { Link } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import ClipLoader from "react-spinners/ClipLoader";
+import { AuthContext } from "../AppContext/AppContext";
 
 const Login = () => {
+  const { signInWithGoogle } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
 
   let initialValues = {
@@ -106,7 +108,12 @@ const Login = () => {
               </form>
             </CardBody>
             <CardFooter className="pt-0">
-              <Button variant="gradient" fullWidth className="mb-4">
+              <Button
+                variant="gradient"
+                fullWidth
+                className="mb-4"
+                onClick={signInWithGoogle}
+              >
                 Sign In with Google
               </Button>
               <Link to="/reset">
