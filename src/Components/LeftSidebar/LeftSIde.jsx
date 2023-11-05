@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useContext } from "react";
 import nature from "../../assets/images/nature.jpg";
 import { Avatar, Tooltip } from "@material-tailwind/react";
 import avatar from "../../assets/images/avatar.jpg";
@@ -10,10 +10,12 @@ import laptop from "../../assets/images/laptop.jpg";
 import media from "../../assets/images/media.jpg";
 import apps from "../../assets/images/apps.jpg";
 import tik from "../../assets/images/tik.jpg";
+import { AuthContext } from "../AppContext/AppContext";
 
 const LeftSIde = () => {
   const [data, setData] = useState([]);
   const count = useRef(0);
+  const { user, userData } = useContext(AuthContext);
 
   const handleRandom = (arr) => {
     setData(arr[Math.floor(Math.random() * arr?.length)]);
@@ -84,7 +86,7 @@ const LeftSIde = () => {
       </div>
       <div className="flex flex-col items-center pt-6">
         <p className="font-serif font-medium text-md text-gray-700 no-underline tracking-normal leading-none">
-          User Email
+          {user?.email}
         </p>
         <p className="font-serif font-medium text-xs text-gray-700 no-underline tracking-normal leading-none">
           Access Exclusive tools & insights

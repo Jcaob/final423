@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Card,
   CardHeader,
@@ -8,15 +8,30 @@ import {
   Input,
   Button,
 } from "@material-tailwind/react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import ClipLoader from "react-spinners/ClipLoader";
 import { AuthContext } from "../AppContext/AppContext";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../firebase/firebase";
 
 const Login = () => {
-  const { signInWithGoogle } = useContext(AuthContext);
+  const { signInWithGoogle, loginWithUserAndEmail } = useContext(AuthContext);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setLoading(true);
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        navigate("/");
+        setLoading(false);
+      } else {
+        setLoading(false);
+      }
+    });
+  }, [navigate]);
 
   let initialValues = {
     email: "",
@@ -35,9 +50,10 @@ const Login = () => {
     e.preventDefault();
     const { email, password } = formik.values;
     if (formik.isValid === true) {
-      alert("good");
+      loginWithUserAndEmail(email, password);
+      setLoading(true);
     } else {
-      alert("Check Your Input Fields");
+      setLoading(false);
     }
     console.log("Formik", formik);
   };

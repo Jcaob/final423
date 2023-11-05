@@ -84,18 +84,8 @@ const AppContext = ({ children }) => {
     await signOut(auth);
   };
 
-  const initalState = {
-    signInWithGoogle: signInWithGoogle,
-    loginWithUserAndEmail: loginWithUserAndEmail,
-    registerWithEmailAndPassword: registerWithEmailAndPassword,
-    sendPassword: sendPassword,
-    signOutUser: signOutUser,
-    user: user,
-    userData: userData,
-  };
-
   const userStateChanged = async () => {
-    onAuthStateChanged(auth, async () => {
+    onAuthStateChanged(auth, async (user) => {
       if (user) {
         const q = query(collectionRef, where("uid", "==", user?.uid));
         await onSnapshot(q, (doc) => {
@@ -118,6 +108,16 @@ const AppContext = ({ children }) => {
     }
     return () => userStateChanged();
   }, []);
+
+  const initalState = {
+    signInWithGoogle: signInWithGoogle,
+    loginWithUserAndEmail: loginWithUserAndEmail,
+    registerWithEmailAndPassword: registerWithEmailAndPassword,
+    sendPassword: sendPassword,
+    signOutUser: signOutUser,
+    user: user,
+    userData: userData,
+  };
 
   return (
     <div>
