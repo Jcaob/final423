@@ -65,9 +65,13 @@ const UserLinks = () => {
       </div>
       <div className="mx-4 flex items-center" onClick={signOutUser}>
         <Tooltip content="Sign Out" placement="bottom">
-          <Avatar src={avatar} size="sm" alt="avatar"></Avatar>
+          <Avatar
+            src={user?.photoURL || avatar}
+            size="sm"
+            alt="avatar"
+          ></Avatar>
         </Tooltip>
-        <p className="mx-4 font-serif text-sm text-black font-medium no-underline">
+        <p className="mx-4 font-serif text-sm text-black font-medium no-underline capitalize">
           {user?.displayName === null && userData?.name !== undefined
             ? userData?.name?.charAt(0)?.toUpperCase() +
               userData?.name?.slice(1)

@@ -5,6 +5,9 @@ import {
   createUserWithEmailAndPassword,
   sendPasswordResetEmail,
   signOut,
+  updateProfile,
+  updateEmail,
+  updatePassword,
 } from "firebase/auth";
 import React from "react";
 import { createContext, useState, useEffect } from "react";
@@ -42,6 +45,7 @@ const AppContext = ({ children }) => {
           Image: user?.photoURL,
           authProvider: popup.providerId,
         });
+        console.log(user);
       }
     } catch (err) {
       console.log(err.message);
@@ -50,10 +54,39 @@ const AppContext = ({ children }) => {
 
   const loginWithUserAndEmail = async (email, password) => {
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const res = await signInWithEmailAndPassword(auth, email, password);
+      const user = res.user;
+      console.log(user);
     } catch (err) {
       console.log(err.message);
     }
+  };
+
+  const updateCurrentUser = async (displayName, password) => {
+    updateProfile(auth.currentUser, {
+      displayName: displayName,
+    })
+      .then(() => {
+        // Profile updated!
+        console.log("worked");
+        // ...
+      })
+      .catch((error) => {
+        // An error occurred
+        // ...
+        console.log(error);
+      });
+    updatePassword(auth.currentUser, password)
+      .then(() => {
+        // Update successful.4
+        console.log(password);
+        console.log("password Updated");
+      })
+      .catch((error) => {
+        // An error ocurred
+        // ...
+        console.log(error);
+      });
   };
 
   const registerWithEmailAndPassword = async (name, email, password) => {
@@ -117,6 +150,7 @@ const AppContext = ({ children }) => {
     signOutUser: signOutUser,
     user: user,
     userData: userData,
+    updateCurrentUser: updateCurrentUser,
   };
 
   return (
