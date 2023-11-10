@@ -7,10 +7,19 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { AuthContext } from "../AppContext/AppContext";
-
+import $ from "jquery";
+import {
+  getStorage,
+  ref,
+  uploadBytes,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "firebase/storage";
+import { app } from "../firebase/firebase";
 function AddAlbumModal() {
   const [modalVisible, setModalVisible] = useState(false);
   const { user, userData, updateCurrentUser } = useContext(AuthContext);
+  const storage = getStorage(app);
 
   const toggleModal = () => {
     setModalVisible(!modalVisible);
@@ -24,8 +33,42 @@ function AddAlbumModal() {
     password: "",
   });
 
+  // const upload = async (e) => {
+  //   const storage = getStorage(app);
+
+  //   const fileInput = document.getElementById("myImage");
+  //   if (fileInput) {
+  //     const file = fileInput.files[0];
+  //     // Rest of your upload code
+  //     const fileName = +new Date() + "-" + file.name;
+  //     const metadata = { contentType: file.type };
+
+  //     const pathRef = ref(storage, "images/" + fileName);
+  //     const storageRef = ref(storage, pathRef);
+
+  //     const uploadTask = uploadBytesResumable(storageRef, file);
+  //     e.preventDefault();
+  //     updateCurrentUser(formData.name);
+  //     console.log(pathRef);
+
+  //     getDownloadURL(ref(storage, storageRef._location.path_))
+  //       .then((url) => {
+  //         // `url` is the download URL for 'images/stars.jpg'
+
+  //         // This can be downloaded directly:
+  //         console.log(url);
+  //       })
+  //       .catch((error) => {
+  //         // Handle any errors
+  //         console.log("error", error);
+  //       });
+  //   } else {
+  //     console.error("Element with id 'myImage' not found.");
+  //   }
+  // };
+
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, image } = e.target;
     setFormData({
       ...formData,
       [name]: value,
@@ -61,12 +104,12 @@ function AddAlbumModal() {
             className=" flex flex-col justify-center  items-center"
           >
             <Typography variant="h4" color="blue-gray">
-              Profile
+              Update Your Name
             </Typography>
 
             <form
               className="mt-8 mb-2 w-80 max-w-screen-lg sm:w-96 flex flex-col justify-center  items-center"
-              onSubmit={handleSubmit}
+              // onSubmit={handleSubmit}
             >
               <div className="mb-1 flex flex-col gap-6">
                 <Typography variant="h6" color="blue-gray" className="-mb-3">
@@ -84,39 +127,31 @@ function AddAlbumModal() {
                     className: "before:content-none after:content-none",
                   }}
                 />
-                <Typography variant="h6" color="blue-gray" className="-mb-3">
-                  Your Email
+                {/* <Typography variant="h6" color="blue-gray" className="-mb-3">
+                  Profile Picture
                 </Typography>
                 <Input
                   size="lg"
-                  placeholder={user?.email}
-                  name="email"
-                  id="userEmail"
-                  value={formData.email}
                   className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
+                  name="Image"
+                  id="myImage"
+                  type="file"
+                  value={formData.image}
                   onChange={handleChange}
                   labelProps={{
                     className: "before:content-none after:content-none",
                   }}
                 />
-                <Typography variant="h6" color="blue-gray" className="-mb-3">
-                  Password
-                </Typography>
-                <Input
-                  type="password"
-                  id="userPassword"
-                  name="message"
-                  value={formData.message}
-                  size="lg"
-                  placeholder="********"
-                  className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
-                  onChange={handleChange}
-                  labelProps={{
-                    className: "before:content-none after:content-none",
-                  }}
-                />
+                <div className=" w-full h-12 border-2 border-solid border-#181818"></div>
+                <div class="bar"></div>
+                <div id="imageHolder"></div> */}
               </div>
-              <Button className="mt-6 w-15 " fullWidth type="submit">
+              <Button
+                className="mt-6 w-15 "
+                fullWidth
+                type="submit"
+                onClick={handleSubmit}
+              >
                 Update Profile
               </Button>
             </form>

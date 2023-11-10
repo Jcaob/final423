@@ -22,6 +22,14 @@ import {
 } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 
+import {
+  getStorage,
+  ref,
+  uploadBytes,
+  uploadBytesResumable,
+  getDownloadURL,
+} from "firebase/storage";
+
 export const AuthContext = createContext();
 
 const AppContext = ({ children }) => {
@@ -62,9 +70,10 @@ const AppContext = ({ children }) => {
     }
   };
 
-  const updateCurrentUser = async (displayName, password) => {
+  const updateCurrentUser = async (displayName, Image) => {
     updateProfile(auth.currentUser, {
       displayName: displayName,
+      photoURL: Image,
     })
       .then(() => {
         // Profile updated!
@@ -73,17 +82,6 @@ const AppContext = ({ children }) => {
       })
       .catch((error) => {
         // An error occurred
-        // ...
-        console.log(error);
-      });
-    updatePassword(auth.currentUser, password)
-      .then(() => {
-        // Update successful.4
-        console.log(password);
-        console.log("password Updated");
-      })
-      .catch((error) => {
-        // An error ocurred
         // ...
         console.log(error);
       });
