@@ -34,6 +34,8 @@ import {
   getDownloadURL,
 } from "firebase/storage";
 import { type } from "@testing-library/user-event/dist/type";
+import { Alert } from "@material-tailwind/react";
+import PostCard from "./PostCard";
 
 const Main = () => {
   const { user, userData } = useContext(AuthContext);
@@ -53,6 +55,7 @@ const Main = () => {
   };
 
   const handleSubmitPost = async (e) => {
+    e.preventDefault();
     if (text.current.value !== "") {
       try {
         await setDoc(postRef, {
@@ -159,8 +162,8 @@ const Main = () => {
                 <input
                   type="text"
                   name="text"
-                  placeholder={`Whats on your Mind ${
-                    user?.displayName.split(" ")[0] ||
+                  placeholder={`Whats on your mind ${
+                    user?.displayName?.split(" ")[0] ||
                     userData?.name?.charAt(0).toUpperCase() +
                       userData?.name?.slice(1)
                   }`}
@@ -225,7 +228,34 @@ const Main = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col py-4 w-full">{/* posts */}</div>
+      <div className="flex flex-col py-4 w-full">
+        {state.error ? (
+          <div className="flex justify-center items-center">
+            <Alert color="red">Something Went Wrong</Alert>
+          </div>
+        ) : (
+          <div>
+            {state.posts.length > 0 &&
+              state.posts?.map((post, index) => {
+                return (
+                  <PostCard
+                    key={index}
+                    logo={post.logo}
+                    id={post?.documentId}
+                    uid={post?.uid}
+                    name={post.name}
+                    email={post.email}
+                    image={post.image}
+                    text={post.text}
+                    timestamp={new Date(
+                      post?.timestamp?.toDate()
+                    )?.toUTCString()}
+                  ></PostCard>
+                );
+              })}
+          </div>
+        )}
+      </div>
       <div ref={scrollRef}>{/* Refrence for later */}</div>
     </div>
   );
