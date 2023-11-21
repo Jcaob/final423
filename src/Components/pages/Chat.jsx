@@ -1,96 +1,38 @@
-// import React, { useRef, useState } from "react";
-// import firebase from "firebase/app";
-// import "firebase/firestore";
-// import "firebase/auth";
-// import "firebase/analytics";
+import React, { useContext, useEffect, useState } from "react";
+import ClipLoader from "react-spinners/ClipLoader";
+import { Link, useNavigate } from "react-router-dom";
+import { auth } from "../firebase/firebase";
+import { onAuthStateChanged } from "firebase/auth";
+import Navbar from "../Navbar/NavBar";
+import FriendList from "../Chat/FriendList";
+const Chat = () => {
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-// import { useAuthState } from "react-firebase-hooks/auth";
-// import { useCollectionData } from "react-firebase-hooks/firestore";
+  useEffect(() => {
+    setLoading(true);
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        navigate("/chat");
+        setLoading(false);
+      } else {
+        setLoading(false);
+      }
+    });
+  }, [navigate]);
+  return (
+    <div className="w-full">
+      <div className="fixed top-0 z-10 w-full bg-white">
+        <Navbar></Navbar>
+      </div>
 
-// firebase.initializeApp({
-//   apiKey: "AIzaSyBrdCrqUV5MWwdRWmkFRqcvuj1MN76l2qE",
-//   authDomain: "media-8998c.firebaseapp.com",
-//   projectId: "media-8998c",
-//   storageBucket: "media-8998c.appspot.com",
-//   messagingSenderId: "91482997431",
-//   appId: "1:91482997431:web:77598b5772423823d64332",
-// });
+      <div className="flex bg-gray-100 ">
+        <div className="flex-auto w-[20%] fixed top-12">
+          <FriendList></FriendList>
+        </div>
+      </div>
+    </div>
+  );
+};
 
-// const auth = firebase.auth();
-// const firestore = firebase.firestore();
-// const analytics = firebase.analytics();
-
-// const Chat = () => {
-//   function ChatRoom() {
-//     const dummy = useRef();
-//     const messagesRef = firestore.collection("messages");
-//     const query = messagesRef.orderBy("createdAt").limit(25);
-
-//     const [messages] = useCollectionData(query, { idField: "id" });
-
-//     const [formValue, setFormValue] = useState("");
-
-//     const sendMessage = async (e) => {
-//       e.preventDefault();
-
-//       const { uid, photoURL } = auth.currentUser;
-
-//       await messagesRef.add({
-//         text: formValue,
-//         createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-//         uid,
-//         photoURL,
-//       });
-
-//       setFormValue("");
-//       dummy.current.scrollIntoView({ behavior: "smooth" });
-//     };
-
-//     return (
-//       <>
-//         <main>
-//           {messages &&
-//             messages.map((msg) => <ChatMessage key={msg.id} message={msg} />)}
-
-//           <span ref={dummy}></span>
-//         </main>
-
-//         <form onSubmit={sendMessage}>
-//           <input
-//             value={formValue}
-//             onChange={(e) => setFormValue(e.target.value)}
-//             placeholder="say something nice"
-//           />
-
-//           <button type="submit" disabled={!formValue}>
-//             🕊️
-//           </button>
-//         </form>
-//       </>
-//     );
-//   }
-
-//   function ChatMessage(props) {
-//     const { text, uid, photoURL } = props.message;
-
-//     const messageClass = uid === auth.currentUser.uid ? "sent" : "received";
-
-//     return (
-//       <>
-//         <div className={`message ${messageClass}`}>
-//           <img
-//             src={
-//               photoURL ||
-//               "https://api.adorable.io/avatars/23/abott@adorable.png"
-//             }
-//           />
-//           <p>{text}</p>
-//         </div>
-//       </>
-//     );
-//   }
-
-//   return <div>Test</div>;
-// };
-
-// export default Chat;
+export default Chat;
