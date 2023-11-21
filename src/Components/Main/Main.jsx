@@ -153,7 +153,7 @@ const Main = () => {
           <Avatar
             size="sm"
             variant="circular"
-            src={avatar}
+            src={user?.photoURL || avatar}
             alt="avatar"
           ></Avatar>
           <form className=" w-full" onSubmit={handleSubmitPost}>
@@ -200,7 +200,7 @@ const Main = () => {
               htmlFor="addImage"
               className=" cursor-pointer flex items-center"
             >
-              <img className=" h-10 mr-4" src={addImage} alt="addImage" />
+              <img className=" h-10 mr-4 " src={addImage} alt="addImage" />
               <input
                 type="file"
                 id="addImage"
@@ -214,18 +214,18 @@ const Main = () => {
               </Button>
             )}
           </div>
-          <div className=" flex items-center">
+          {/* <div className=" flex items-center">
             <img className=" h-10 mr-4" src={live} alt="live" />
             <p className="font-serif font-medium text-md text-gray-700 no-underline tracking-normal leading-none">
               Live
             </p>
-          </div>
-          <div className=" flex items-center">
+          </div> */}
+          {/* <div className=" flex items-center">
             <img className=" h-10 mr-4" src={smile} alt="smile" />
             <p className="font-serif font-medium text-md text-gray-700 no-underline tracking-normal leading-none">
               Smile
             </p>
-          </div>
+          </div> */}
         </div>
       </div>
       <div className="flex flex-col py-4 w-full">

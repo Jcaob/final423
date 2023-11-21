@@ -7,7 +7,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { AuthContext } from "../AppContext/AppContext";
-import $ from "jquery";
+// import $ from "jquery";
 import {
   getStorage,
   ref,
@@ -19,7 +19,9 @@ import { app } from "../firebase/firebase";
 function AddAlbumModal() {
   const [modalVisible, setModalVisible] = useState(false);
   const { user, userData, updateCurrentUser } = useContext(AuthContext);
+  const [userImage, setUserImage] = useState("");
   const storage = getStorage(app);
+  let imageURL = "";
 
   const toggleModal = () => {
     setModalVisible(!modalVisible);
@@ -30,56 +32,70 @@ function AddAlbumModal() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    password: "",
+    Image: "",
   });
 
-  // const upload = async (e) => {
-  //   const storage = getStorage(app);
+  const upload = async (e) => {
+    const storage = getStorage(app);
 
-  //   const fileInput = document.getElementById("myImage");
-  //   if (fileInput) {
-  //     const file = fileInput.files[0];
-  //     // Rest of your upload code
-  //     const fileName = +new Date() + "-" + file.name;
-  //     const metadata = { contentType: file.type };
+    const fileInput = document.getElementById("myImage");
+    if (fileInput) {
+      const file = fileInput.files[0];
+      // Rest of your upload code
+      const fileName = +new Date() + "-" + file.name;
+      const metadata = { contentType: file.type };
 
-  //     const pathRef = ref(storage, "images/" + fileName);
-  //     const storageRef = ref(storage, pathRef);
+      const pathRef = ref(storage, "images/" + fileName);
+      const storageRef = ref(storage, pathRef);
 
-  //     const uploadTask = uploadBytesResumable(storageRef, file);
-  //     e.preventDefault();
-  //     updateCurrentUser(formData.name);
-  //     console.log(pathRef);
+      const uploadTask = uploadBytesResumable(storageRef, file);
 
-  //     getDownloadURL(ref(storage, storageRef._location.path_))
-  //       .then((url) => {
-  //         // `url` is the download URL for 'images/stars.jpg'
+      e.preventDefault();
+      // updateCurrentUser(formData.Image);
 
-  //         // This can be downloaded directly:
-  //         console.log(url);
-  //       })
-  //       .catch((error) => {
-  //         // Handle any errors
-  //         console.log("error", error);
-  //       });
-  //   } else {
-  //     console.error("Element with id 'myImage' not found.");
-  //   }
-  // };
+      uploadTask.on(
+        "state_changed",
+
+        (snapshot) => {
+          // Observe state change events such as progress, pause, and resume
+          // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          console.log("Upload is " + progress + "% done");
+        },
+
+        (error) => {
+          // Handle unsuccessful uploads
+          console.log("error", error);
+        },
+        () => {
+          // Handle successful uploads on complete
+          // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadURL) => {
+            console.log("File Done Here da URL", downloadURL);
+            imageURL = downloadURL;
+            console.log(imageURL);
+          });
+        }
+      );
+    }
+  };
 
   const handleChange = (e) => {
-    const { name, value, image } = e.target;
+    const { name, value, Image } = e.target;
+    console.log(formData);
     setFormData({
       ...formData,
       [name]: value,
+      [Image]: setUserImage(imageURL),
     });
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
     // You can access the form data in the `formData` object
-    console.log(formData);
-    updateCurrentUser(formData.name);
+
+    console.log(imageURL);
+    updateCurrentUser(formData.name, imageURL);
     // Here, you can send the data to a server or perform any other desired action.
   };
 
@@ -127,7 +143,7 @@ function AddAlbumModal() {
                     className: "before:content-none after:content-none",
                   }}
                 />
-                {/* <Typography variant="h6" color="blue-gray" className="-mb-3">
+                <Typography variant="h6" color="blue-gray" className="-mb-3">
                   Profile Picture
                 </Typography>
                 <Input
@@ -136,15 +152,18 @@ function AddAlbumModal() {
                   name="Image"
                   id="myImage"
                   type="file"
-                  value={formData.image}
+                  value={formData.Image}
                   onChange={handleChange}
                   labelProps={{
                     className: "before:content-none after:content-none",
                   }}
                 />
-                <div className=" w-full h-12 border-2 border-solid border-#181818"></div>
-                <div class="bar"></div>
-                <div id="imageHolder"></div> */}
+
+                <Button className=" w-full" onClick={upload}>
+                  Upload
+                </Button>
+
+                <div id="imageHolder"></div>
               </div>
               <Button
                 className="mt-6 w-15 "

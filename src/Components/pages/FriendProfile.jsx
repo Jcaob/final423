@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+
 import LeftSIde from "../LeftSidebar/LeftSIde";
 import Navbar from "../Navbar/NavBar";
 import RightSide from "../RightSiderbar/RightSide";
@@ -47,7 +48,7 @@ const FriendProfile = () => {
                   <Avatar
                     size="xl"
                     variant="circular"
-                    src={profile?.image || avatar}
+                    src={profile?.Image || avatar}
                     alt="avatar"
                   ></Avatar>
                   <p className="py-2 font-roboto font-medium text-sm text-white no-underline tracking-normal leading-none">

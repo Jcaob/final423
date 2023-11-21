@@ -139,7 +139,7 @@ const Register = () => {
                   type="submit"
                   className=" mb-4"
                 >
-                  Sign In
+                  Register
                 </Button>
               </form>
             </CardBody>
