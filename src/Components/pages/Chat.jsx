@@ -1,35 +1,29 @@
-import React, { useContext, useEffect, useState } from "react";
-import ClipLoader from "react-spinners/ClipLoader";
-import { Link, useNavigate } from "react-router-dom";
-import { auth } from "../firebase/firebase";
-import { onAuthStateChanged } from "firebase/auth";
+import React, { useState } from "react";
 import Navbar from "../Navbar/NavBar";
-import FriendList from "../Chat/FriendList";
+import ChatFriendList from "../Chat/ChatFriendList";
+import ChatWindow from "../Chat/ChatWindow"; // Import the ChatWindow component
+
 const Chat = () => {
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
+  const [selectedFriendId, setSelectedFriendId] = useState(null);
 
-  useEffect(() => {
-    setLoading(true);
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        navigate("/chat");
-        setLoading(false);
-      } else {
-        setLoading(false);
-      }
-    });
-  }, [navigate]);
+  const handleFriendClick = (friendId) => {
+    setSelectedFriendId(friendId);
+  };
+
   return (
-    <div className="w-full">
+    <div className="w-full flex">
       <div className="fixed top-0 z-10 w-full bg-white">
-        <Navbar></Navbar>
+        <Navbar />
       </div>
-
-      <div className="flex bg-gray-100 ">
+      <div className="flex w-full">
         <div className="flex-auto w-[20%] fixed top-12">
-          <FriendList></FriendList>
+          <ChatFriendList onFriendClick={handleFriendClick} />
         </div>
+        {selectedFriendId && (
+          <div className="flex-auto ml-[450px] ">
+            <ChatWindow selectedFriendId={selectedFriendId} />
+          </div>
+        )}
       </div>
     </div>
   );
