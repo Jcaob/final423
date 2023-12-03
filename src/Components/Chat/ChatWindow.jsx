@@ -1,3 +1,4 @@
+// ChatWindow.jsx
 import React, { useState, useEffect } from "react";
 import {
   collection,
@@ -5,9 +6,12 @@ import {
   orderBy,
   onSnapshot,
   addDoc,
+  getDoc,
+  doc,
+  serverTimestamp,
 } from "firebase/firestore";
 import { db } from "../firebase/firebase";
-import { auth } from "../firebase/firebase"; // Ensure to import your Firebase authentication reference
+import { auth } from "../firebase/firebase";
 
 const ChatWindow = ({ selectedFriendId }) => {
   const [messages, setMessages] = useState([]);
@@ -40,7 +44,7 @@ const ChatWindow = ({ selectedFriendId }) => {
         senderId: auth.currentUser.uid,
         receiverId: selectedFriendId,
         text: newMessage,
-        timestamp: new Date(),
+        timestamp: serverTimestamp(),
       });
 
       console.log("Message sent with ID: ", docRef.id);
@@ -51,14 +55,23 @@ const ChatWindow = ({ selectedFriendId }) => {
   };
 
   return (
-    <div className="flex flex-col h-full bg-white">
+    <div className="flex flex-col h-full bg-white mt-20">
       <div className="flex-1 overflow-y-auto p-4">
         {messages.map((message) => (
           <div key={message.id} className="m-2">
             {message.senderId === auth.currentUser.uid ? (
-              <div className="text-right">{message.text}</div>
+              <div className="text-right">
+                <br></br>
+                {message.text}
+                <br></br>
+                {new Date(message?.timestamp?.toDate())?.toUTCString()}
+              </div>
             ) : (
-              <div className="text-left">{message.text}</div>
+              <div className="text-left">
+                {message.text}
+                <br></br>
+                {new Date(message?.timestamp?.toDate())?.toUTCString()}
+              </div>
             )}
           </div>
         ))}
