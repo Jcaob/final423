@@ -1,7 +1,7 @@
 {
   "name": "final",
   "version": "0.1.0",
-  "homepage": "http://{jcaob}.github.io/{final423}",
+  "homepage": "http://jcaob.github.io/final423",
   "private": true,
   "dependencies": {
     "@material-tailwind/html": "^2.0.0",
