@@ -14,9 +14,7 @@ const Navbar = () => {
           App
         </div>
       </Link>
-      <div className="flex justify-center items-center mx-auto">
-        <NavLinks></NavLinks>
-      </div>
+      <div className="flex justify-center items-center mx-auto"></div>
       <div>
         <UserLinks></UserLinks>
       </div>
